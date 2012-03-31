@@ -1,10 +1,12 @@
 extern printf
 
 section .data
-    format db "%d",10,0
+    format db "%d",0
 
 section .text
     global main
+
+
 
 fact: ; стек очищает сама функция
     mov ecx, [esp + 4] ; аргумент во врем. переменную
@@ -28,8 +30,8 @@ fact: ; стек очищает сама функция
     ret 4 
 
 main:
-    push 10
-    call fact
+	push 10
+	call fact
 
     push eax
     push format
