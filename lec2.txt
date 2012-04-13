@@ -1,0 +1,54 @@
+где хранить локальные переменные?
+
+== сохранение регистров ==
+
+push ebx
+...
+pop ebx
+ret
+
+сохраним регистры в стеке, подвинем esp, чтобы было удобнее работать, в конце
+вернём как было
+
+; пролог --- сохранить значения регистров
+sub esp, 20h 
+push ebx
+...
+mov [esp + 4], ecx
+
+; эпилог --- вернуть всё назад
+pop ebx
+add esp, 20h
+
+
+push ebp
+mov ebx, esp
+sub esp, 20h
+
+можно ещё так
+push ebp
+mov ebp, esp
+sub esp, 20h
+...
+mov esp, ebp
+pop ebp
+ret
+
+есть команда leave = mov esp, ebp; pop ebp
+
+какая-то муть
+sub esp, 20h
+push ebx
+push esi
+push dword [esp + 30h]
+push dword [esp + 30h]
+push dword [esp + 30h]
+call ???
+add esp, 20h
+
+
+задание: 
+сделать что-то такое: ./prog param1 "param 2" -> вывести количество параметров
+
+получить аргументы командной строки: GetCommandLine[A|W]
+
