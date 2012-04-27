@@ -51,7 +51,7 @@ _atan:
 
 main:
     fld1
-    push dword 100000000
+    push dword 10000
     call _atan
 
     sub esp, 8
