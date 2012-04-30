@@ -7,7 +7,7 @@ section .data
 	buffer db 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0  
         r db "r",0
         w db "w",0
-        namein db "white.bmp",0
+        namein db "test.bmp",0
         nameout db "ololo.bmp",0
         format db "%d",0
 
