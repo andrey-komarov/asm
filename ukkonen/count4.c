@@ -8,14 +8,12 @@
 typedef int edge;
 typedef int vertex;
 
-int ID = 0;
 int INF;
 const int N = 100, M = 100;
 static const int ALPHA = 26;
 char* s;
 edge **edges;
 vertex* suf;
-int* id;
 int* vdepth;
 int vertices = 0;
 
@@ -39,7 +37,6 @@ void fill(int* a, int n, int val)
 int newVertex(int d) 
 {
     int i = vertices++;
-    id[i] = ID++;
     vdepth[i] = d;
     fill(edges[i], ALPHA, -1);
     suf[i] = -1;
@@ -224,7 +221,6 @@ int main()
     fscanf(in, "%d\n", &n);
 //    s = new char[n];
     suf = (int*)malloc(8 * n);
-    id = (int*)malloc(8 * n);
     from = (int*)malloc(8 * n);
     to = (int*)malloc(8 * n);
     left = (int*)malloc(8 * n);
