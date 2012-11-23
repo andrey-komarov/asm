@@ -220,7 +220,8 @@ int main()
 {
     FILE* in = fopen("count.in", "r");
     int n;
-    fscanf(in, "%d\n", &n);
+    fscanf(in, "%d", &n);
+    printf("%d", n);
 //    s = new char[n];
     suf = (int*)malloc(8 * n);
     id = (int*)malloc(8 * n);

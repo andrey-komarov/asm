@@ -9,13 +9,14 @@ typedef int edge;
 typedef int vertex;
 
 int INF;
-const int N = 100, M = 100;
 static const int ALPHA = 26;
 char* s;
 edge **edges;
 vertex* suf;
 int* vdepth;
 int vertices = 0;
+vertex *from, *to;
+int *left, *right;
 
 vertex hell;
 vertex root;
@@ -27,11 +28,35 @@ int last_depth;
 edge last_edge;
 int current_letter;
 
+void print_stats()
+{
+    printf("Edges:\n");
+    int i, j;
+    for (i = 0; i < vertices; i++)
+    {
+        for (j = 0; j < 26; j++)
+            printf("%d,", edges[i][j]);
+        printf("\n");
+    }
+    printf("Suffices:\n");
+    for (i = 0; i < vertices; i++)
+        printf("%d,",suf[i]);
+    printf("Curr: V:%d, E:%d // Last: V%d, E:%d, D:%d", current_vertex, current_edge, last_vertex, last_edge, last_depth);
+    printf("\n");
+    printf("Left:");
+    for (i = 0;i < vertices; i++)
+        printf("%d,", left[i]);
+    printf("Right:");
+    for (i = 0; i < vertices;i++)
+        printf("%d,", right[i]);
+    printf("\n\n");
+}
+
 void fill(int* a, int n, int val)
 {
     int i;
     for (i = 0; i < n; i++)
-        *(a + i) = val;
+        a[i] = val;
 }
 
 int newVertex(int d) 
@@ -43,8 +68,6 @@ int newVertex(int d)
     return i;
 }
 
-vertex *from, *to;
-int *left, *right;
 
 int edgesCnt = 0;
 int newEdge(vertex f, int l)
@@ -170,11 +193,11 @@ void append(int ch)
         jump_suffix_link();
     }
     go(ch);
+    print_stats();
 }
 
-void suffix_tree(int n, char* ss) 
+void suffix_tree(int n) 
 {
-    s = ss;
     hell = newVertex(-1);
     root = newVertex(0);
     current_vertex = root;
@@ -189,6 +212,8 @@ void suffix_tree(int n, char* ss)
         edges[hell][i] = from_hell;
     suf[hell] = hell;
     suf[root] = hell;
+
+    print_stats();
 
     for (current_letter = 0; current_letter < n; current_letter++)
         append(s[current_letter]);
@@ -219,7 +244,6 @@ int main()
     FILE* in = fopen("count.in", "r");
     int n;
     fscanf(in, "%d\n", &n);
-//    s = new char[n];
     suf = (int*)malloc(8 * n);
     from = (int*)malloc(8 * n);
     to = (int*)malloc(8 * n);
@@ -227,14 +251,14 @@ int main()
     right = (int*)malloc(8 * n);
     s = (char*)malloc(4 * n);
     vdepth = (int*)malloc(8 * n);
-    int *tmp = (int*)malloc(8 * n * ALPHA);
+    int *tmp = (int*)malloc(8 * 8 * n * ALPHA);
     edges = (int**)malloc(8 * n);
     int i;
-    for (i = 0; i < n; i++)
-        edges[i] = tmp + 8 * n * i;
+    for (i = 0; i < 2 * n; i++)
+        edges[i] = tmp + 8 * 26 * i;
     fscanf(in, "%s", s);
     fclose(in);
-    suffix_tree(n, s);
+    suffix_tree(n);
     printf("%lld\n", traverse() - 1);
     return 0;
 }

@@ -222,7 +222,8 @@ int main()
     ifstream in("count.in");
     ofstream out("count.out");
     string s;
-    in >> s;
+    int n;
+    in >> n >> s;
     suffix_tree t(s);
-    out << t.traverse() - 1 << "\n";
+    cout << t.traverse() - 1 << "\n";
 }
