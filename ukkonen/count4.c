@@ -27,6 +27,7 @@ vertex last_vertex;
 int last_depth;
 edge last_edge;
 int current_letter;
+int edgesCnt = 0;
 
 void print_stats()
 {
@@ -44,10 +45,10 @@ void print_stats()
     printf("Curr: V:%d, E:%d // Last: V%d, E:%d, D:%d", current_vertex, current_edge, last_vertex, last_edge, last_depth);
     printf("\n");
     printf("Left:");
-    for (i = 0;i < vertices; i++)
+    for (i = 0;i < edgesCnt; i++)
         printf("%d,", left[i]);
     printf("Right:");
-    for (i = 0; i < vertices;i++)
+    for (i = 0; i < edgesCnt;i++)
         printf("%d,", right[i]);
     printf("\n\n");
 }
@@ -69,7 +70,6 @@ int newVertex(int d)
 }
 
 
-int edgesCnt = 0;
 int newEdge(vertex f, int l)
 {
     int i = edgesCnt++;

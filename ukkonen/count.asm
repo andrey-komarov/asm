@@ -22,7 +22,7 @@ section .data
         vertices dd 0
         edges_cnt dd 0
         hell dd -1
-        root dd -1
+        rooot dd -1
         current_vertex dd -1
         current_edge dd -1
     ret
@@ -175,11 +175,11 @@ new_edge:
     inc dword [edges_cnt]
     ; from[eax] = from
     mov edx, [from]
-    mov ecx, [esp + 8]
+    mov ecx, [esp + 4]
     mov [edx + 4 * eax], ecx
     ; left[eax] = left
     mov edx, [left]
-    mov ecx, [esp + 4]
+    mov ecx, [esp + 8]
     mov [edx + 4 * eax], ecx
     ; right[eax] = INF
     mov edx, [right]
@@ -202,19 +202,19 @@ new_edge2:
     inc dword [edges_cnt]
     ; from[eax] = from
     mov edx, [from]
-    mov ecx, [esp + 16]
+    mov ecx, [esp + 4]
     mov [edx + 4 * eax], ecx
     ; to[eax] = to
     mov edx, [too]
-    mov ecx, [esp + 12]
+    mov ecx, [esp + 8]
     mov [edx + 4 * eax], ecx
     ; left[eax] = left
     mov edx, [left]
-    mov ecx, [esp + 8]
+    mov ecx, [esp + 12]
     mov [edx + 4 * eax], ecx
     ; right[eax] = right
     mov edx, [right]
-    mov ecx, [esp + 4]
+    mov ecx, [esp + 16]
     mov [edx + 4 * eax], ecx
     ret
 
@@ -258,8 +258,8 @@ create_new_leaf_here:
     cmp dword [current_vertex], -1
     je newleaf_if1_elif
         ; edges[current_vertex][ch] = newEdge(current_vertex, current_letter)
-        push dword [current_vertex]
         push dword [current_letter]
+        push dword [current_vertex]
         call new_edge
         add esp, 8
         mov edx, [edges]
@@ -545,11 +545,11 @@ suffix_tree:
     call new_vertex
     add esp, 4
     mov [hell], eax
-    ; root = new_vertex(0)
+    ; rooot = new_vertex(0)
     push dword 0
     call new_vertex
     add esp, 4
-    mov [root], eax
+    mov [rooot], eax
     
     mov [current_vertex], eax
     mov dword [current_edge], -1
@@ -567,10 +567,10 @@ suffix_tree:
         test ecx, ecx
         jnz suftree_str_sub_loop
 
-    ; new_edge2(hell, root, -1, 0)
+    ; new_edge2(hell, rooot, -1, 0)
     push dword 0
     push dword -1
-    push dword [root]
+    push dword [rooot]
     push dword [hell]
     call new_edge2
     add esp, 16
@@ -589,9 +589,9 @@ suffix_tree:
     mov ecx, [hell]
     mov edx, [suf]
     mov [edx + 4 * ecx], ecx
-    ; suf[root] = hell
+    ; suf[rooot] = hell
     push ecx
-    mov ecx, [root]
+    mov ecx, [rooot]
     pop dword [edx + 4 * ecx]
     call print_stats
     ; append(s[i])
@@ -646,7 +646,7 @@ traverse2:
 
 ; cdecl traverse()
 traverse:
-    push dword [root]
+    push dword [rooot]
     call traverse2
     add esp, 4
     ret
