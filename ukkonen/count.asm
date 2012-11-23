@@ -614,6 +614,7 @@ suffix_tree:
 
 ; cdecl traverse2(v)
 traverse2:
+    inc dword [ans]
     push ebx
     mov ebx, 26
     traverse2_loop:
@@ -623,24 +624,19 @@ traverse2:
         mov edx, [edx + 4 * ecx]
         mov edx, [edx + 4 * ebx]
         cmp edx, -1
-        je traverse_if_fin
-            push edx
+        je travers2_if_fin
             push edx
             call length
-            add esp, 4
             add [ans], eax
             dec dword [ans]
             pop edx
             mov ecx, [too]
-            mov edx, [ecx + 4 * edx]
-            push edx
+            push dword [ecx + 4 * edx]
             call traverse2
             add esp, 4
-        traverse_if_fin: 
+        travers2_if_fin:
         test ebx, ebx
-        jz traverse2_loop_fin
-    jmp traverse2_loop        
-    traverse2_loop_fin:
+        jnz traverse2_loop
     pop ebx
     ret
 
@@ -649,6 +645,7 @@ traverse:
     push dword [rooot]
     call traverse2
     add esp, 4
+    dec dword [ans]
     ret
 
 main:
