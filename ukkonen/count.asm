@@ -289,7 +289,7 @@ create_new_leaf_here:
             mov edx, [suf]
             mov ecx, [last_vertex]
             lea edx, [edx + 4 * ecx]
-            mov ecx, [new_vertex]
+            mov ecx, eax
             mov [edx], ecx
         newleaf_if2_fin:
 
