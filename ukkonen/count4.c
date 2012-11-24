@@ -42,7 +42,7 @@ void print_stats()
     printf("Suffices:\n");
     for (i = 0; i < vertices; i++)
         printf("%d,",suf[i]);
-    printf("Curr: V:%d, E:%d D:%d // Last: V:%d, E:%d, D:%d", current_vertex, current_edge, depth, last_vertex, last_edge, last_depth);
+    printf("Curr: V:%d E:%d D:%d // Last: V:%d, E:%d, D:%d", current_vertex, current_edge, depth, last_vertex, last_edge, last_depth);
     printf("\n");
     printf("Left:");
     for (i = 0;i < edgesCnt; i++)
@@ -50,6 +50,9 @@ void print_stats()
     printf("Right:");
     for (i = 0; i < edgesCnt;i++)
         printf("%d,", right[i]);
+    printf("From:");
+    for (i = 0; i < edgesCnt;i++)
+        printf("%d,", from[i]);
     printf("\n\n");
 }
 

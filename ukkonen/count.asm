@@ -45,6 +45,7 @@ section .data
         msgLasts db "Curr: V:%d E:%d D:%d // Last: V:%d, E:%d, D:%d",10,0
         msgLeft db "Left:",0
         msgRight db "Right:",0
+        msgFrom db "From:",0
 section .text
     global main
 
@@ -138,6 +139,22 @@ print_stats:
         inc eax
         cmp eax, [edges_cnt]
         jl print_stats_right_loop
+
+    push msgFrom
+    call printf
+    add esp, 4
+    mov eax, 0
+    print_stats_from_loop:
+        push eax
+        mov edx, [from]
+        push dword [edx + 4 * eax]
+        push msgIntComma
+        call printf
+        add esp, 8
+        pop eax
+        inc eax
+        cmp eax, [edges_cnt]
+        jl print_stats_from_loop
 
     push msgNewLine
     call printf
@@ -328,7 +345,7 @@ create_new_leaf_here:
         pop ebx ; restore
         ; edges[new_vertex][ch] = new_edge(new_vertex, current_letter)
         push dword [current_letter]
-        push dword [esp] ; new_vertex
+        push dword [esp+4] ; new_vertex
         call new_edge
         add esp, 8
         mov edx, [edges]
@@ -669,12 +686,6 @@ main:
     push dword [infile]
     call fscanf
     add esp, 12
-
-    ; вывести это число
-    push dword [n]
-    push formatInt
-    call printf
-    add esp, 8
 
     push ebx
     mov ebx, [n]
