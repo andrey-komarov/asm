@@ -1,11 +1,8 @@
 extern printf
-extern fread
 extern fopen
-extern fwrite
 extern fscanf
 extern fclose
 extern malloc
-extern scanf
 
 section .data
         w db "w",0
@@ -637,45 +634,28 @@ suffix_tree:
 
     ret
 
-; cdecl traverse2(v)
-traverse2:
-    push ebx
-    mov ebx, 26
-    traverse2_loop:
-        dec ebx
-        mov edx, [edges]
-        mov ecx, [esp + 8]
-        mov edx, [edx + 4 * ecx]
-        mov edx, [edx + 4 * ebx]
-        cmp edx, -1
-        je travers2_if_fin
-            push edx
-            call length
-            dec eax
-            movd mm1, eax
-            paddq mm0, mm1
-            add [ans], eax
-            dec dword [ans]
-            pop edx
-            mov ecx, [too]
-            push dword [ecx + 4 * edx]
-            call traverse2
-            add esp, 4
-        travers2_if_fin:
-        test ebx, ebx
-        jnz traverse2_loop
-    pop ebx
-    ret
-
 ; cdecl traverse()
 traverse:
-    push dword [rooot]
-    mov eax, [edges_cnt]
-    dec eax
-    movd mm0, eax
-    call traverse2
-    add esp, 4
-    dec dword [ans]
+    push esi
+    push edi
+    mov ecx, [edges_cnt]
+    traverse_loop:
+        dec ecx
+        push ecx
+        call length
+        add esp, 4
+        movd mm1, eax
+        paddq mm0, mm1
+        
+        test ecx, ecx
+        jnz traverse_loop
+    pop edi
+    pop esi
+    push dword -1
+    push dword -1
+    movq mm1, [esp]
+    add esp, 8
+    paddq mm0, mm1
     ret
 
 main:
@@ -753,7 +733,7 @@ main:
 
     ; строим дерево
     call suffix_tree
-    
+   
     movq [esp-8], mm0
     movq [esp-16], mm1
     sub esp, 16
