@@ -558,7 +558,7 @@ append:
     push dword [esp + 4]
     call go
     add esp, 4
-    call print_stats
+    ; call print_stats
     ret
 
 ; cdecl suffix_tree()
@@ -726,13 +726,15 @@ main:
     mov ebx, 208
     mov eax, [tmp]
     mov edx, [edges]
+    mov ecx, [n]
+    add ecx, ecx
     edge_init_loop:
         mov [edx], eax
         add eax, ebx; eax = tmp, 8 * n * ecx 
         add edx, 4
-        inc ecx
-        cmp ecx, 25
-        jle edge_init_loop
+        dec ecx
+        test ecx, ecx
+        jnz edge_init_loop
 
     pop ebx
 

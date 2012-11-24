@@ -196,7 +196,7 @@ void append(int ch)
         jump_suffix_link();
     }
     go(ch);
-    print_stats();
+    //print_stats();
 }
 
 void suffix_tree(int n) 
