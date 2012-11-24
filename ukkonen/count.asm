@@ -12,6 +12,7 @@ section .data
         r db "r",0
         namein db "count.in",0
         formatInt db "%d",10,0
+        formatLongLong db "%lld",10,0
         formatString db "%s",0
         infile dd -1
         n dd -1
@@ -638,7 +639,6 @@ suffix_tree:
 
 ; cdecl traverse2(v)
 traverse2:
-    inc dword [ans]
     push ebx
     mov ebx, 26
     traverse2_loop:
@@ -651,6 +651,9 @@ traverse2:
         je travers2_if_fin
             push edx
             call length
+            dec eax
+            movd mm1, eax
+            paddq mm0, mm1
             add [ans], eax
             dec dword [ans]
             pop edx
@@ -667,6 +670,9 @@ traverse2:
 ; cdecl traverse()
 traverse:
     push dword [rooot]
+    mov eax, [edges_cnt]
+    dec eax
+    movd mm0, eax
     call traverse2
     add esp, 4
     dec dword [ans]
@@ -748,12 +754,20 @@ main:
     ; строим дерево
     call suffix_tree
     
+    movq [esp-8], mm0
+    movq [esp-16], mm1
+    sub esp, 16
     call traverse
     
-    push dword [ans]
-    push formatInt
+    movq [esp-8], mm0
+    sub esp, 8
+    push formatLongLong
     call printf
-    add esp, 8
+    add esp, 12
+
+    movq mm1, [esp]
+    movq mm0, [esp+8]
+    add esp, 16
 
     xor eax, eax
     ret
