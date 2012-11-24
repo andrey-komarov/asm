@@ -723,7 +723,7 @@ main:
     mov [tmp], eax
     add esp, 4
     xor ecx, ecx
-    mov ebx, 208
+    mov ebx, 104
     mov eax, [tmp]
     mov edx, [edges]
     mov ecx, [n]

@@ -1,6 +1,6 @@
 from random import *
 
-n = 200
+n = 100000
 alpha = "abcdefghijklmnopqrstuvwxyz"[:2]
 
 print (n)

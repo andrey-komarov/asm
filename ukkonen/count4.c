@@ -254,11 +254,11 @@ int main()
     right = (int*)malloc(8 * n);
     s = (char*)malloc(4 * n);
     vdepth = (int*)malloc(8 * n);
-    int *tmp = (int*)malloc(8 * 8 * n * ALPHA);
+    int *tmp = (int*)malloc(8 * n * ALPHA);
     edges = (int**)malloc(8 * n);
     int i;
     for (i = 0; i < 2 * n; i++)
-        edges[i] = tmp + 8 * 26 * i;
+        edges[i] = tmp + 26 * i;
     fscanf(in, "%s", s);
     fclose(in);
     suffix_tree(n);
