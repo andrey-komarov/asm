@@ -42,7 +42,7 @@ void print_stats()
     printf("Suffices:\n");
     for (i = 0; i < vertices; i++)
         printf("%d,",suf[i]);
-    printf("Curr: V:%d, E:%d // Last: V%d, E:%d, D:%d", current_vertex, current_edge, last_vertex, last_edge, last_depth);
+    printf("Curr: V:%d, E:%d D:%d // Last: V:%d, E:%d, D:%d", current_vertex, current_edge, depth, last_vertex, last_edge, last_depth);
     printf("\n");
     printf("Left:");
     for (i = 0;i < edgesCnt; i++)
@@ -213,7 +213,7 @@ void suffix_tree(int n)
     suf[hell] = hell;
     suf[root] = hell;
 
-    print_stats();
+    //print_stats();
 
     for (current_letter = 0; current_letter < n; current_letter++)
         append(s[current_letter]);

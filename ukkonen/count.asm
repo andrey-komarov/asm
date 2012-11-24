@@ -42,7 +42,7 @@ section .data
         msgNewLine db 10,0
         msgIntComma db "%d,",0
         msgSuf db "Suffices:",10,0
-        msgLasts db "Curr: V:%d E:%d // Last: V:%d, E:%d, D:%d",10,0
+        msgLasts db "Curr: V:%d E:%d D:%d // Last: V:%d, E:%d, D:%d",10,0
         msgLeft db "Left:",0
         msgRight db "Right:",0
 section .text
@@ -100,11 +100,12 @@ print_stats:
     push dword [last_depth]
     push dword [last_edge]
     push dword [last_vertex]
+    push dword [depth]
     push dword [current_edge]
     push dword [current_vertex]
     push msgLasts
     call printf
-    add esp, 24
+    add esp, 28
 
     push msgLeft
     call printf
@@ -237,15 +238,14 @@ can_go:
     je can_go_error
     ; eax = s[left[current_edge] + depth] - ch
     mov edx, [left]
-    mov eax, [current_edge]
-    mov edx, [edx + 4 * eax]
-    add edx, [depth]
-    mov eax, [s]
-    xor edx, edx
-    mov dl, [edx + eax]
-    mov eax, edx
-    mov edx, [esp + 4]
-    sub eax, edx
+    mov ecx, [current_edge]
+    mov ecx, [edx + 4 * ecx]
+    add ecx, [depth]
+    mov edx, [s]
+    xor eax, eax
+    mov al, [edx + ecx]
+    sub eax, [esp+4]
+    not eax
 
     can_go_finish:
     ret 4
@@ -377,7 +377,7 @@ length:
 
 ; jump_suffix_link()
 jump_suffix_link:
-    pusha
+    pushad
     mov edx, [suf]
     mov ecx, [current_vertex]
     cmp dword [edx + 4 * ecx], -1
@@ -418,7 +418,7 @@ jump_suffix_link:
             add esp, 4
             cmp ebx, eax
             jle jump_suflink_while_end
-            add [esi], eax
+            add esi, eax
             ; current_edge = edges[to[current_edge]][s[need_left]]
             mov edx, [too]
             mov ecx, [current_edge]
@@ -427,7 +427,7 @@ jump_suffix_link:
             mov edx, [edx + 4 * ecx]
             mov eax, [s]
             xor ebx, ebx
-            mov ecx, [esi]
+            mov ecx, esi
             mov bl, [eax + ecx]
             mov edx, [edx + 4 * ebx]
             mov [current_edge], edx
@@ -466,7 +466,7 @@ jump_suffix_link:
             mov [depth], eax
         jump_suflink_if2_fin:
     jump_suflink_fin:
-    popa
+    popad
     ret
 
 ; cdecl go(ch)
@@ -593,7 +593,7 @@ suffix_tree:
     push ecx
     mov ecx, [rooot]
     pop dword [edx + 4 * ecx]
-    call print_stats
+    ;call print_stats
     ; append(s[i])
     mov dword [current_letter], 0
     push ebx
@@ -606,6 +606,7 @@ suffix_tree:
         add esp, 4
         inc dword [current_letter]
         mov eax, [current_letter]
+        inc ebx
         cmp eax, [n]
         jl suftree_add_loop
     pop ebx
