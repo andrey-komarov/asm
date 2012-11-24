@@ -245,7 +245,13 @@ can_go:
     xor eax, eax
     mov al, [edx + ecx]
     sub eax, [esp+4]
-    not eax
+    test eax, eax
+    jz can_go_lnot
+        xor eax, eax
+        jmp can_go_lnot_fin
+    can_go_lnot:
+        mov eax, 1
+    can_go_lnot_fin:
 
     can_go_finish:
     ret 4
