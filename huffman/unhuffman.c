@@ -19,7 +19,7 @@ uchar tmpbuf[LETTER];
 int tmpbuf_used = 0;
 
 FILE* in_;
-FILE* out;
+FILE* out_;
 
 uchar buffer[BUFSIZE];
 int buffer_pos = BUFSIZE - 1;
@@ -59,6 +59,8 @@ void print_letter(uchar ch)
     //outbuffer[outbuffer_pos++] = ch;
 }
 
+extern void ololo(int);
+
 extern main_(int argc, char** argv);
 int main(int argc, char** argv)
 {
@@ -73,7 +75,7 @@ int main(int argc, char** argv)
     //fread(letter, 1, sizeof(letter), in_);
     //fread(&len, 1, sizeof(len), in_);
     int i;
-    for (i = 0; i < LETTER; i++)
+    /* for (i = 0; i < LETTER; i++)
     {
         int p = i;
         tmpbuf_used = 0;
@@ -82,6 +84,7 @@ int main(int argc, char** argv)
             tmpbuf[tmpbuf_used++] = letter[p];
             p = parent[p];
         }
+        ololo(i);
         int node = 0; // root
         int j;
         for (j = tmpbuf_used - 1; j >= 0; j--)
@@ -92,9 +95,9 @@ int main(int argc, char** argv)
             node = to_[tmpbuf[j]][node];
         }
         trie_letter[node] = i;
-    }
-    out = fopen(argv[1], "w");
-    int node = 0;
+    } */ 
+    //out = fopen(argv[1], "w");
+    /* int node = 0;
     for (i = 0; i < len;)
     {
         if (to_[0][node] == 0 && to_[1][node] == 0)
@@ -104,9 +107,9 @@ int main(int argc, char** argv)
             i++;
         }
         node = to_[next_bit()][node];
-    }
-    fwrite(outbuffer, 1, outbuffer_pos, out);
-    fclose(in_);
-    fclose(out);
+    } */
+    //fwrite(outbuffer, 1, outbuffer_pos, out_);
+    //fclose(in_);
+    //fclose(out_);
     return 0;
 }

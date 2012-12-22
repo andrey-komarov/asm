@@ -8,8 +8,7 @@ pack:
 
 unpack:
 	yasm -f elf32 unhuffman.asm
-	gcc -c unhuffman.c -o unhuffman_c.o -m32
-	gcc unhuffman.o unhuffman_c.o -o unpack -m32
+	gcc unhuffman.o -o unpack -m32
 
 test:
 	gcc -c a.c -m32
