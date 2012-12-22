@@ -1,5 +1,8 @@
+section .bss
+    ololo db "1234567890",0
+
 section .data
-    format db "/bin/bash",0
+    format db "/bin/ps",0
 
 global _start
 

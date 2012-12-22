@@ -2,26 +2,31 @@
 #include <stdlib.h>
 
 #define BUFSIZE (1<<20)
+//const int BUFSIZE = 1 << 20;
 #define LETTERS 256
 #define VERTICES (LETTERS * 2 - 1)
 
-FILE* fout;
-char outbuffer[BUFSIZE];
+typedef unsigned char uchar;
+
+//FILE* fout;
+//uchar outbuffer[BUFSIZE];
 int buffer_used = 0;
 int buffer1_used = 0;
-char preoutbuf[LETTERS];
+uchar preoutbuf[LETTERS];
 size_t preoutbuf_used;
 
 size_t freq[256];
-char buffer[BUFSIZE];
+uchar buffer[BUFSIZE];
 short parent[VERTICES];
-char letter[VERTICES];
-short queue[VERTICES];
+uchar letter[VERTICES];
+int queue[VERTICES];
 int weight[VERTICES];
 int qsize = 0;
 int used = LETTERS;
+FILE* file;
+int len = 0;
 
-void print(char ch)
+/* void print(uchar ch)
 {
     outbuffer[buffer_used] |= ch << buffer1_used;
     if (++buffer1_used == 8)
@@ -34,9 +39,14 @@ void print(char ch)
         }
         outbuffer[buffer_used] = 0;
     }
+} */
+extern void print_(uchar ch);
+void print(uchar ch)
+{
+    print_(ch);
 }
 
-void print_encoded(char ch)
+/* void print_encoded(uchar ch)
 {
     int p = ch;
     preoutbuf_used = 0;
@@ -50,15 +60,21 @@ void print_encoded(char ch)
     {
         print(preoutbuf[i]);
     }
+} */
+extern void print_encoded_(uchar ch);
+void print_encoded(uchar ch)
+{
+    print_encoded_(ch);
 }
 
-void push(short v, int w)
+/* void push_(int v, int w)
 {
     weight[v] = w;
     queue[qsize++] = v;
-}
+} */ 
+extern void push_(int v, int w);
 
-short pop()
+/* short pop()
 {
     int i;
     int best = 0;
@@ -70,32 +86,38 @@ short pop()
     tmp = queue[best];
     queue[best] = queue[qsize];
     return tmp;
+} */
+extern int pop_();
+int pop()
+{
+    return pop_();
 }
 
+extern int main_(int argc, char** argv);
 int main(int argc, char** argv)
 {
-    if (argc != 3)
+    main_(argc, argv);
+    /*if (argc != 3)
     {
         printf("need two arguments\n");
         return -1;
     }
-    FILE* file = fopen(argv[2], "r");
+    FILE* file = fopen(argv[2], "r"); */
     int size;
-    int len = 0;
-    while ((size = fread(buffer, 1, BUFSIZE, file)))
+    /*while ((size = fread(buffer, 1, BUFSIZE, file)))
     {
         int i;
         for (i = 0; i < size; i++)
             freq[buffer[i]]++;
         len += size;
-    }
+    } */
     int i;
-    for (i = 0; i < 256; i++)
+    /* for (i = 0; i < 256; i++)
     {
         parent[i] = -1;
-        push(i, freq[i]);
-    }
-    while (qsize != 1)
+        push_(i, freq[i]);
+    } */
+    /*while (qsize != 1)
     {
         int v1 = pop();
         int v2 = pop();
@@ -105,24 +127,24 @@ int main(int argc, char** argv)
         parent[v2] = used;
         letter[v1] = 1;
         letter[v2] = 0;
-        push(used++, w1 + w2);
-    }
-    parent[pop()] = -1;
+        push_(used++, w1 + w2);
+    } */
+    // parent[pop()] = -1;
 
-    fclose(file);
-    file = fopen(argv[2], "r");
-    fout = fopen(argv[1], "w");
-    fwrite(parent, 1, sizeof(parent), fout);
-    fwrite(letter, 1, sizeof(letter), fout);
-    fwrite(&len, 1, sizeof(len), fout);
-    while ((size = fread(buffer, 1, BUFSIZE, file)))
+    // fclose(file);
+    //file = fopen(argv[2], "r");
+    //fout = fopen(argv[1], "w");
+    //fwrite(parent, 1, sizeof(parent), fout);
+    //fwrite(letter, 1, sizeof(letter), fout);
+    //fwrite(&len, 1, sizeof(len), fout);
+    /*while ((size = fread(buffer, 1, BUFSIZE, file)))
     {
         size_t i;
         for (i = 0; i < size; i++)
             print_encoded(buffer[i]);
-    }
-    fwrite(outbuffer, 1, buffer_used + 1, fout);
+    } */
+    /*fwrite(outbuffer, 1, buffer_used + 1, fout);
     fclose(file);
-    fclose(fout);
-    return 0;
+    fclose(fout); */
+    return 0; 
 }

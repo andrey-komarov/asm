@@ -74,7 +74,6 @@ int main(int argc, char** argv)
             tmpbuf[tmpbuf_used++] = letter[p];
             p = parent[p];
         }
-        printf("%d len %d\n", i, tmpbuf_used);
         int node = 0; // root
         int j;
         for (j = tmpbuf_used - 1; j >= 0; j--)
