@@ -6,64 +6,72 @@
 #define BUFSIZE (1 << 20)
 #define TRIE_V (LETTER * LETTER)
 
-short parent[VERTICES];
-char letter[VERTICES];
+typedef unsigned char uchar;
 
-int to[2][TRIE_V];
-char trie_letter[TRIE_V];
+short parent[VERTICES];
+uchar letter[VERTICES];
+
+int to_[2][TRIE_V];
+uchar trie_letter[TRIE_V];
 int trie_used = 1;
 
-char tmpbuf[LETTER];
+uchar tmpbuf[LETTER];
 int tmpbuf_used = 0;
 
-FILE* in;
+FILE* in_;
 FILE* out;
 
-char buffer[BUFSIZE];
+uchar buffer[BUFSIZE];
 int buffer_pos = BUFSIZE - 1;
 int buffer_pos_2 = 8;
 
-char outbuffer[BUFSIZE];
+uchar outbuffer[BUFSIZE];
 int outbuffer_pos = 0;
+int len;
 
-char next_bit()
+extern uchar next_bit_();
+uchar next_bit()
 {
-    if (buffer_pos_2 == 8)
+    return next_bit_();
+/*    if (buffer_pos_2 == 8)
     {
         buffer_pos_2 = 0;
         if (buffer_pos == BUFSIZE - 1)
         {
             buffer_pos = 0;
-            fread(buffer, 1, BUFSIZE, in);
+            fread(buffer, 1, BUFSIZE, in_);
         } else {
             buffer_pos++;
         }
-    }
-    return (buffer[buffer_pos] >> buffer_pos_2++) & 1;
+    } */
+    //return (buffer[buffer_pos] >> buffer_pos_2++) & 1;
 }
 
-void print_letter(char ch)
+extern void print_letter_(uchar ch);
+void print_letter(uchar ch)
 {
-    if (outbuffer_pos == BUFSIZE)
+    print_letter_(ch);
+    /*if (outbuffer_pos == BUFSIZE)
     {
         fwrite(outbuffer, 1, BUFSIZE, out);
         outbuffer_pos = 0;
-    }
-    outbuffer[outbuffer_pos++] = ch;
+    } */
+    //outbuffer[outbuffer_pos++] = ch;
 }
 
+extern main_(int argc, char** argv);
 int main(int argc, char** argv)
 {
-    if (argc != 3)
+    main_(argc, argv);
+/*    if (argc != 3)
     {
         printf("need two arguments\n");
         return -1;
     }
-    in = fopen(argv[2], "r");
-    int len;
-    fread(parent, 1, sizeof(parent), in);
-    fread(letter, 1, sizeof(letter), in);
-    fread(&len, 1, sizeof(len), in);
+    in_ = fopen(argv[2], "r"); */
+    //fread(parent, 1, sizeof(parent), in_);
+    //fread(letter, 1, sizeof(letter), in_);
+    //fread(&len, 1, sizeof(len), in_);
     int i;
     for (i = 0; i < LETTER; i++)
     {
@@ -79,9 +87,9 @@ int main(int argc, char** argv)
         for (j = tmpbuf_used - 1; j >= 0; j--)
         {
             
-            if (to[tmpbuf[j]][node] == 0)
-                to[tmpbuf[j]][node] = trie_used++;
-            node = to[tmpbuf[j]][node];
+            if (to_[tmpbuf[j]][node] == 0)
+                to_[tmpbuf[j]][node] = trie_used++;
+            node = to_[tmpbuf[j]][node];
         }
         trie_letter[node] = i;
     }
@@ -89,16 +97,16 @@ int main(int argc, char** argv)
     int node = 0;
     for (i = 0; i < len;)
     {
-        if (to[0][node] == 0 && to[1][node] == 0)
+        if (to_[0][node] == 0 && to_[1][node] == 0)
         {
             print_letter(trie_letter[node]);
             node = 0;
             i++;
         }
-        node = to[next_bit()][node];
+        node = to_[next_bit()][node];
     }
     fwrite(outbuffer, 1, outbuffer_pos, out);
-    fclose(in);
+    fclose(in_);
     fclose(out);
     return 0;
 }

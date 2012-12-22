@@ -14,7 +14,7 @@ section .bss
     buffer_used dd 0
     preoutbuf : times 256 db 0
     preoutbuf_used dd 0
-    freq : times 256 db 0
+    freq : times 256 dd 0
     buffer : times BUFSIZE db 0
     parent : times 511 dw 0
     letter : times 511 db 0

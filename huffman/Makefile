@@ -7,7 +7,9 @@ pack:
 	gcc huffman.o -o pack -m32
 
 unpack:
-	gcc -g unhuffman.c -o unpack -m32
+	yasm -f elf32 unhuffman.asm
+	gcc -c unhuffman.c -o unhuffman_c.o -m32
+	gcc unhuffman.o unhuffman_c.o -o unpack -m32
 
 test:
 	gcc -c a.c -m32
